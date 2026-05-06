@@ -58,13 +58,15 @@ A continuación se evidencian las 8 vulnerabilidades explotadas con éxito en la
 ![Demostración XSS Almacenado](./capturas/xss_Almacenado.png)
 
 ### 3. Inyección SQL (SQLi)
-![Demostración SQLi](./capturas/inyeccion_SQL.png)(./capturas/inyeccion_SQL_2.png)
+![Demostración SQLi](./capturas/inyeccion_SQL.png)
+![Demostración SQLi](./capturas/inyeccion_SQL_2.png)
 
 ### 4. Command Injection
 ![Demostración Command Injection](./capturas/command_injection.png)
 
 ### 5. IDOR (Insecure Direct Object Reference)
-![Demostración IDOR](./capturas/IDOR_1.png)(./capturas/IDOR_2.png)
+![Demostración IDOR](./capturas/IDOR_1.png)
+![Demostración IDOR](./capturas/IDOR_2.png)
 
 ### 6. Exposición de Datos Sensibles
 ![Demostración Exposición de Datos](./capturas/Sensitive_Data_Exposure.png)
@@ -73,4 +75,5 @@ A continuación se evidencian las 8 vulnerabilidades explotadas con éxito en la
 ![Demostración Error Verbose](./capturas/Security_Misconfiguration.png)
 
 ### 8. Autenticación Rota
-![Demostración Broken Auth](./capturas/Broken_authenticator.png)(./capturas/Broken_authenticator_2.png)
+![Demostración Broken Auth](./capturas/Broken_authenticator.png)
+![Demostración Broken Auth](./capturas/Broken_authenticator_2.png)
