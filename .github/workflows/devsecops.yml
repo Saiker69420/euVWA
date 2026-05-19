@@ -76,7 +76,7 @@ jobs:
       # Levantamos la aplicación con Docker Compose para atacarla
       - name: Levantar aplicación local
         run: |
-          docker-compose up -d
+          docker compose up -d
           sleep 10 # Damos tiempo a que arranque el servidor
           
       - name: Escaneo ZAP Baseline
