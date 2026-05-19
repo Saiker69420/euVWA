@@ -1,13 +1,13 @@
 # ETAPA 1: Construcción (Builder) - Multi-stage build
-FROM node:18-alpine AS builder
+FROM node:22-alpine AS builder
 WORKDIR /app
-# Copiamos solo los archivos de dependencias primero (mejora el caché)
+# Copiamos solo los archivos de dependencias primero 
 COPY package*.json ./
 # Instalamos todas las dependencias
 RUN npm install
 
 # ETAPA 2: Producción (Imagen final minimizada)
-FROM node:18-alpine
+FROM node:22-alpine
 WORKDIR /app
 
 # VULNERABILITY MITIGATION: No usar el usuario root
