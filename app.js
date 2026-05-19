@@ -94,6 +94,8 @@ app.get('/v4/cmd', (req, res) => {
         return res.send(`<h1>Herramienta Ping Segura</h1><p>Error: IP no válida. Intentos de inyección bloqueados.</p>`);
     }
 
+    // Le decimos a Semgrep que ignore esta línea porque ya mitigamos el riesgo con la Regex superior (Falso Positivo)
+    // nosemgrep: javascript.lang.security.detect-child-process.detect-child-process
     exec('ping -n 1 ' + ip, (err, stdout) => {
         res.send(`<h1>Herramienta Ping Segura</h1><form><input name="ip" value="${ip}"><button>Ping</button></form><pre>${stdout}</pre>`);
     });
