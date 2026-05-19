@@ -77,3 +77,34 @@ A continuación se evidencian las 8 vulnerabilidades explotadas con éxito en la
 ### 8. Autenticación Rota
 ![Demostración Broken Auth](./capturas/Broken_authenticator.png)
 ![Demostración Broken Auth](./capturas/Broken_authenticator_2.png)
+
+# Informe Ejecutivo DevSecOps - euVWA
+
+Este documento detalla la implementación del pipeline CI/CD de seguridad (DevSecOps) para la aplicación euVWA, integrando controles automatizados desde el código hasta el despliegue.
+
+## 1. Fases del Pipeline y Herramientas (Shift Left)
+
+El pipeline de GitHub Actions se compone de 4 fases de seguridad automatizadas:
+
+* **Análisis SAST (Semgrep):** Escanea el código estático en busca de vulnerabilidades del OWASP Top 10 (ej. inyecciones SQL, Command Injection). Se ha configurado para fallar ante hallazgos críticos.
+* **Análisis SCA y SBOM (Trivy):** Analiza las dependencias del `package.json` en busca de librerías vulnerables y genera un inventario de software (SBOM) en formato estándar CycloneDX.
+* **Docker Security (Trivy Image):** Tras compilar la imagen Docker, se escanea el contenedor final. Se ha implementado un archivo `.trivyignore` para gestionar falsos positivos y aceptar riesgos conocidos que no afectan a la aplicación.
+* **Análisis DAST (OWASP ZAP):** Se despliega la aplicación efímeramente y ZAP realiza un escaneo dinámico atacando los endpoints expuestos para detectar configuraciones erróneas en tiempo de ejecución. Genera un reporte final en HTML/MD.
+
+## 2. Hardening de la Imagen Docker y Docker Compose
+
+Para asegurar el contenedor, se han aplicado las siguientes medidas de mitigación:
+* **Multi-stage Build:** Se separa la fase de construcción de la de producción para evitar llevar herramientas de desarrollo (compiladores, dependencias dev) a la imagen final, reduciendo la superficie de ataque.
+* **Usuario No-Root (Principio de Mínimo Privilegio):** La imagen final utiliza el usuario `node` sin privilegios en lugar del usuario `root` por defecto. Si el contenedor es comprometido, el atacante no tendrá permisos de superusuario.
+* **Minimización:** Se ha utilizado la imagen `node:22-alpine`, la cual está altamente reducida y carece de herramientas innecesarias del sistema operativo.
+* **Sin Secrets en Imagen:** Las variables de entorno y configuración se inyectan en tiempo de ejecución (Compose), nunca 'hardcodeadas' en el Dockerfile.
+
+## 3. Umbrales de Severidad y Propuestas de Mejora
+
+* **Umbrales configurados:** El pipeline está diseñado para **romperse (exit code 1)** únicamente ante vulnerabilidades de nivel `HIGH` y `CRITICAL` detectadas en las fases SAST, SCA e Imagen Docker. Las vulnerabilidades medias o bajas se reportan pero no bloquean el paso a producción, balanceando seguridad y agilidad de entrega.
+* **Propuesta de mejora futura:** Implementar *Secrets Management* nativo (como GitHub Secrets inyectados dinámicamente) y notificaciones automáticas vía Slack o Teams en caso de que el pipeline falle por una vulnerabilidad crítica de día cero (0-day).
+
+## 4. Artefactos Generados
+
+En la carpeta `/artefactos` de este repositorio se incluye:
+1.  **Reporte DAST:** Informe de vulnerabilidades dinámicas generado por ZAP.
