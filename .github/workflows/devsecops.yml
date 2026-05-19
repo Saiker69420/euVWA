@@ -81,7 +81,9 @@ jobs:
           sleep 10 # Damos tiempo a que arranque el servidor
           
       - name: Escaneo ZAP Baseline
-        uses: zaproxy/action-baseline@v0.12.0
+        uses: zaproxy/action-baseline@v0.14.0
         with:
           target: 'http://localhost:3000'
-          fail_action: false # Lo ponemos en false para que genere el reporte aunque encuentre fallos
+          fail_action: false
+          artifact_name: 'reporte_zap'
+          token: ${{ secrets.GITHUB_TOKEN }}
